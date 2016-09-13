@@ -5,13 +5,13 @@ class DateTimeView {
         $dt = new DateTime();
         
         // Day of week, ex. Monday
-        $weekDay = $dt->format('l');
+        $weekDay = $dt->format("l");
         
         // Date of month, ex. 21
-        $date = $dt->format('j');
+        $date = $dt->format("j");
         
         // Suffix of date of month, ex. st
-        switch (substr($date, -1)) {
+        /*switch (substr($date, -1)) {
             case 1:
                 $dateSuffix = "st";
                 break;
@@ -24,7 +24,9 @@ class DateTimeView {
             default:
                 $dateSuffix = "th";
                 break;
-        }
+        }*/
+
+        $dateSuffix = $dt->format("S");
 
         // Month, ex. September
         $month = $dt->format('F');
@@ -36,6 +38,6 @@ class DateTimeView {
         $time = $dt->format('H:i:s');
 
         $timeString = "$weekDay, the $date$dateSuffix of $month $year, The time is $time";
-        return '<p>' . $timeString . '</p>';
+        return "<p>$timeString</p>";
     }
 }

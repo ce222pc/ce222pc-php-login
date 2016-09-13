@@ -12,7 +12,8 @@ class LayoutView {
                 </head>
                 <body>
                     <h1>Assignment 2</h1>
-                    ' . $this->renderIsLoggedIn($isLoggedIn) . '
+                    ' . $this->renderRegisterNewUser($isLoggedIn)
+                    . $this->renderIsLoggedIn($isLoggedIn) . '
                     
                     <div class="container">
                             ' . $v->response() . '
@@ -32,4 +33,14 @@ class LayoutView {
             return '<h2>Not logged in</h2>';
         }
     }
+
+    private function renderRegisterNewUser($isLoggedIn) {
+        if ($isLoggedIn) {
+            return '';
+        }
+        else {
+            return '<a href="?register">Register a new user</a>';
+        }
+    }
 }
+

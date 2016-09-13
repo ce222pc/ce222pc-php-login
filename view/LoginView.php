@@ -17,7 +17,7 @@ class LoginView {
 	 *
 	 * Should be called after a login attempt has been determined
 	 *
-	 * @return  void BUT writes to standard output and cookies!
+	 * @return string BUT writes to standard output and cookies!
 	 */
 	public function response() {
 		$message = '';
@@ -25,6 +25,10 @@ class LoginView {
 		if ($this->getRequestUserName() === "") {
 			$message = "Username is missing";
 		}
+
+        if ($this->getRequestPassword() === "") {
+            $message = "Password is missing";
+        }
 		
 		$response = $this->generateLoginFormHTML($message);
 		//$response .= $this->generateLogoutButtonHTML($message);
@@ -34,7 +38,7 @@ class LoginView {
 	/**
 	* Generate HTML code on the output buffer for the logout button
 	* @param $message, String output message
-	* @return  void, BUT writes to standard output!
+	* @return string
 	*/
 	private function generateLogoutButtonHTML($message) {
 		return '
@@ -48,7 +52,7 @@ class LoginView {
 	/**
 	* Generate HTML code on the output buffer for the logout button
 	* @param $message, String output message
-	* @return  void, BUT writes to standard output!
+	* @return string
 	*/
 	private function generateLoginFormHTML($message) {
 		return '
@@ -56,7 +60,7 @@ class LoginView {
 				<fieldset>
 					<legend>Login - enter Username and password</legend>
 					<p id="' . self::$messageId . '">' . $message . '</p>
-					
+
 					<label for="' . self::$name . '">Username :</label>
 					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
 
@@ -76,5 +80,9 @@ class LoginView {
 	private function getRequestUserName() {
 		return isset($_POST[self::$name]) ? $_POST[self::$name] : null;
 	}
+
+    private function getRequestPassword() {
+        return isset($_POST[self::$password]) ? $_POST[self::$password] : null;
+    }
 	
 }
