@@ -11,11 +11,11 @@ class RegisterView {
 
     public function response() {
         $messages = array();
-
-        if (!$this->getRequestUserName() || $this->getRequestUserName() === "") {
+        var_dump($_POST);
+        if ($this->getRequestUserName() || $this->getRequestUserName() === "") {
             $messages[] = "Username has too few characters, at least 3 characters.";
         }
-        if (!$this->getRequestPassword() || $this->getRequestPassword() === "") {
+        if ($this->getRequestPassword() || $this->getRequestPassword() === "") {
             $messages[] = "Password has too few characters, at least 6 characters.";
         }
 
