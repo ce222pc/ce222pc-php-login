@@ -11,7 +11,6 @@ class RegisterView {
 
     public function response() {
         $messages = array();
-        var_dump($_POST);
         if ($this->getRequestUserName() || $this->getRequestUserName() === "") {
             $messages[] = "Username has too few characters, at least 3 characters.";
         }
