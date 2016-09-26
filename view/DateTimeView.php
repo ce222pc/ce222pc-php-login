@@ -3,29 +3,14 @@
 class DateTimeView {
     public function show() {
         $dt = new DateTime();
-        
+
         // Day of week, ex. Monday
         $weekDay = $dt->format("l");
-        
+
         // Date of month, ex. 21
         $date = $dt->format("j");
-        
-        // Suffix of date of month, ex. st
-        /*switch (substr($date, -1)) {
-            case 1:
-                $dateSuffix = "st";
-                break;
-            case 2:
-                $dateSuffix = "nd";
-                break;
-            case 3:
-                $dateSuffix = "rd";
-                break;
-            default:
-                $dateSuffix = "th";
-                break;
-        }*/
 
+        // Suffix of date of month, ex. st
         $dateSuffix = $dt->format("S");
 
         // Month, ex. September

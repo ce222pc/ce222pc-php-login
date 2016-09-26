@@ -9,6 +9,8 @@ require_once('view/LayoutView.php');
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
+session_start();
+
 //CREATE OBJECTS OF THE VIEWS
 $v = new LoginView();
 $dtv = new DateTimeView();
@@ -16,3 +18,13 @@ $lv = new LayoutView();
 
 $lv->render(false, $v, $dtv);
 
+require_once("model/UserModel.php");
+
+$u = new \model\User("Admin");
+$u->login();
+echo '<pre>' . var_export($u, true) . '</pre>';
+echo '<pre>' . var_export($_SESSION, true) . '</pre>';
+
+
+// $u = new \model\User("bAdmin");
+// echo '<pre>' . var_export($u, true) . '</pre>';
