@@ -1,8 +1,10 @@
 <?php
 
+namespace view;
+
 class DateTimeView {
     public function show() {
-        $dt = new DateTime();
+        $dt = new \DateTime();
 
         // Day of week, ex. Monday
         $weekDay = $dt->format("l");

@@ -1,9 +1,15 @@
 <?php
 
+namespace view;
+
+require_once("DateTimeView.php");
 
 class LayoutView {
 
-    public function render($isLoggedIn, LoginView $v, DateTimeView $dtv) {
+    public function render($containerView) {
+
+        $dtv = new \view\DateTimeView();
+
         echo '<!DOCTYPE html>
             <html>
                 <head>
@@ -12,11 +18,11 @@ class LayoutView {
                 </head>
                 <body>
                     <h1>Assignment 2</h1>
-                    ' . $this->renderRegisterNewUser($isLoggedIn)
-                    . $this->renderIsLoggedIn($isLoggedIn) . '
+                    ' . $this->renderRegisterNewUser()
+                    . $this->renderIsLoggedIn() . '
 
                     <div class="container">
-                            ' . $v->response() . '
+                            ' . $containerView->response() . '
 
                             ' . $dtv->show() . '
                     </div>
@@ -25,8 +31,8 @@ class LayoutView {
         ';
     }
 
-    private function renderIsLoggedIn($isLoggedIn) {
-        if ($isLoggedIn) {
+    private function renderIsLoggedIn() {
+        if ($this->isLoggedIn()) {
             return '<h2>Logged in</h2>';
         }
         else {
@@ -34,12 +40,16 @@ class LayoutView {
         }
     }
 
-    private function renderRegisterNewUser($isLoggedIn) {
-        if ($isLoggedIn) {
+    private function renderRegisterNewUser() {
+        if ($this->isLoggedIn()) {
             return '';
         }
         else {
             return '<a href="?register">Register a new user</a>';
         }
+    }
+
+    private function isLoggedIn() {
+        return isset($_SESSION["user"]) && $_SESSION["user"]["isLoggedIn"];
     }
 }

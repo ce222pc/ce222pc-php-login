@@ -1,4 +1,5 @@
 <?php
+namespace view;
 
 class LoginView {
 	private static $login = 'LoginView::Login';
@@ -15,9 +16,7 @@ class LoginView {
 
 		if ($this->getRequestUserName() === "") {
 			$message = "Username is missing";
-		}
-
-        if ($this->getRequestPassword() === "") {
+		} else if ($this->getRequestPassword() === "") {
             $message = "Password is missing";
         }
 
