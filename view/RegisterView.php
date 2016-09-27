@@ -31,7 +31,7 @@ class RegisterView {
                     <p id="' . self::$messageId . '">' . $message . '</p>
 
                     <label for="' . self::$name . '">Username :</label>
-                    <input type="text" size="20" id="' . self::$name . '" name="' . self::$name . '" value="" />
+                    <input type="text" size="20" id="' . self::$name . '" name="' . self::$name . '" value="' . self::getRequestUserName() . '" />
                     <br/>
 
                     <label for="' . self::$password . '">Password :</label>
