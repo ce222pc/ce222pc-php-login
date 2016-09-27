@@ -11,15 +11,15 @@ class LoginView {
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 
-	public function response() {
-		$message = '';
+	public function response($flashMessage) {
 
 		if ($this->getRequestUserName() === "") {
-			$message = "Username is missing";
+			$flashMessage->add("Username is missing");
 		} else if ($this->getRequestPassword() === "") {
-            $message = "Password is missing";
+            $flashMessage->add("Password is missing");
         }
 
+        $message = $flashMessage->get();
 		$response = $this->generateLoginFormHTML($message);
 		//$response .= $this->generateLogoutButtonHTML($message);
 		return $response;

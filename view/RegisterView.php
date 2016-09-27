@@ -9,16 +9,16 @@ class RegisterView {
     private static $messageId = 'RegisterView::Message';
     private static $register = 'DoRegistration';
 
-    public function response() {
-        $messages = array();
-        if ($this->getRequestUserName() || $this->getRequestUserName() === "") {
-            $messages[] = "Username has too few characters, at least 3 characters.";
+    public function response($flashMessage) {
+
+        if ($this->getRequestUserName() && $this->getRequestUserName() === "") {
+            $flashMessage->addMessage("Username has too few characters, at least 3 characters.");
         }
-        if ($this->getRequestPassword() || $this->getRequestPassword() === "") {
-            $messages[] = "Password has too few characters, at least 6 characters.";
+        if ($this->getRequestPassword() && $this->getRequestPassword() === "") {
+            $flashMessage->add("Password has too few characters, at least 6 characters.");
         }
 
-        $message = join("<br/>", $messages);
+        $message = $flashMessage->get();
 
         return $this->generateRegisterFormHTML($message);
     }

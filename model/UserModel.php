@@ -16,6 +16,7 @@ class User {
         // WTF?
         $db = new \Database();
         $this->db = $db->db;
+
         // Temp
         $this->name = $name;
         $this->hash = "";
@@ -27,6 +28,23 @@ class User {
         if ($user) {
             $this->isRegistered = true;
             $this->hash = $user["hash"];
+        }
+    }
+
+    public function register($password, $passwordRepeat) {
+        $this->hash = password_hash($password, PASSWORD_DEFAULT)
+        $statement = $this->db->prepare("INSERT INTO user (name, hash) values (?, ?)");
+        $statement->bindValue(1, $this->name);
+        $statement->bindValue(2, $this->hash);
+        $statement->execute();
+    }
+
+    public function validateName() {
+        $valid = true;
+        $message = "";
+        if ($this->name === htmlspecialchars($this->name)) {
+            $valid = false;
+            $message = "Username contains invalid characters"
         }
     }
 

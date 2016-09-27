@@ -6,7 +6,7 @@ require_once("DateTimeView.php");
 
 class LayoutView {
 
-    public function render($containerView) {
+    public function render($flashMessageProvider, $containerView) {
 
         $dtv = new \view\DateTimeView();
 
@@ -22,7 +22,7 @@ class LayoutView {
                     . $this->renderIsLoggedIn() . '
 
                     <div class="container">
-                            ' . $containerView->response() . '
+                            ' . $containerView->response($flashMessageProvider) . '
 
                             ' . $dtv->show() . '
                     </div>
