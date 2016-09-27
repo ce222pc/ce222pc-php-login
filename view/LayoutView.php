@@ -43,8 +43,9 @@ class LayoutView {
     private function renderRegisterNewUser() {
         if ($this->isLoggedIn()) {
             return '';
-        }
-        else {
+        } else if(isset($_GET["register"])) {
+            return '<a href="?">Back to login</a>';
+        } else {
             return '<a href="?register">Register a new user</a>';
         }
     }
