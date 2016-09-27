@@ -11,16 +11,23 @@ class LoginController {
     public function __construct($flashMessageProvider) {
         $this->fmp = $flashMessageProvider;
         $this->layoutView = new \view\LayoutView();
-        $this->registerView = new \view\LoginView();
+        $this->loginView = new \view\LoginView();
     }
     public function shouldRoute() {
+        return self::isLoginPOST();
+    }
+    public function route() {
+        if (self::isLoginPOST()) {
+            // Handle post data
+            $this->layoutView->render($this->fmp, $this->loginView);
+        } else {
+            $this->layoutView->render($this->fmp, $this->loginView);
+        }
+    }
+
+    private static function isLoginPOST() {
         return isset($_POST["LoginView::Login"])
             && $_POST["LoginView::Login"] === "login"
             && !$_SESSION["user"]["isLoggedIn"];
-    }
-    public function route() {
-        if (isset($_GET["register"])) {
-            $this->layoutView->render($this->fmp, $this->registerView);
-        }
     }
 }
