@@ -1,6 +1,7 @@
 <?php
 
 require_once('model/FlashMessage.php');
+require_once('model/UserModel.php');
 
 //INCLUDE THE FILES NEEDED...
 require_once('view/LoginView.php');

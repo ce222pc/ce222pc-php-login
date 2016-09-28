@@ -49,19 +49,19 @@ class RegisterView {
         ';
     }
 
-    private function getRequestUserName() {
+    public function getRequestUserName() {
         return isset($_POST[self::$name]) ? $_POST[self::$name] : false;
     }
 
-    private function getRequestPassword() {
+    public function getRequestPassword() {
         return isset($_POST[self::$password]) ? $_POST[self::$password] : false;
     }
 
-    private function getRequestPasswordRepeat() {
+    public function getRequestPasswordRepeat() {
         return isset($_POST[self::$passwordRepeat]) ? $_POST[self::$passwordRepeat] : false;
     }
 
-    private function getRequestRegister() {
+    public function getRequestRegister() {
         return isset($_POST[self::$register]) ? $_POST[self::$register] : false;
     }
 }

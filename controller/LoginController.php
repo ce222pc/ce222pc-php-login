@@ -28,6 +28,6 @@ class LoginController {
     private static function isLoginPOST() {
         return isset($_POST["LoginView::Login"])
             && $_POST["LoginView::Login"] === "login"
-            && !$_SESSION["user"]["isLoggedIn"];
+            && (isset($_SESSION["user"]) && !$_SESSION["user"]["isLoggedIn"]);
     }
 }

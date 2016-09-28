@@ -2,7 +2,7 @@
 namespace model;
 require_once("db.php");
 
-class User {
+class UserModel {
 
     public $name;
     private $hash;
@@ -31,22 +31,36 @@ class User {
         }
     }
 
-    public function register($password, $passwordRepeat) {
-        $this->hash = password_hash($password, PASSWORD_DEFAULT)
+    public function register($password) {
+        $this->hash = password_hash($password, PASSWORD_DEFAULT);
         $statement = $this->db->prepare("INSERT INTO user (name, hash) values (?, ?)");
         $statement->bindValue(1, $this->name);
         $statement->bindValue(2, $this->hash);
         $statement->execute();
     }
 
-    public function validateName() {
-        $valid = true;
-        $message = "";
-        if ($this->name === htmlspecialchars($this->name)) {
-            $valid = false;
-            $message = "Username contains invalid characters"
-        }
+    public static function validateNameCharacters($name) {
+        // $valid = true;
+        // $message = "";
+        // if ($this->name === htmlspecialchars($this->name)) {
+        //     $valid = false;
+        //     $message = "Username contains invalid characters"
+        // }
+        return $name === htmlspecialchars($name);
     }
+
+    public static function validateNameLength($name) {
+        return strlen($name) >= 3;
+    }
+
+    public static function validatePasswordLength($name) {
+        return strlen($name) >= 6;
+    }
+
+    public static function validatePasswordMatch($password, $passwordRepeat) {
+        return $password === $passwordRepeat;
+    }
+
 
     public function verifyPassword($candidate) {
         return password_verify($candidate, $this->hash);
