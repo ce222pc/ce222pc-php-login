@@ -23,7 +23,6 @@ class LayoutView {
 
                     <div class="container">
                             ' . $containerView->response($flashMessageProvider) . '
-
                             ' . $dtv->show() . '
                     </div>
                  </body>
