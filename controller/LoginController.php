@@ -2,6 +2,7 @@
 namespace controller;
 
 require_once('view/LoginView.php');
+require_once('model/UserModel.php');
 
 class LoginController {
 
@@ -19,6 +20,28 @@ class LoginController {
     public function route() {
         if (self::isLoginPOST()) {
             // Handle post data
+
+            $name = $this->loginView->getRequestUserName();
+            $password = $this->loginView->getRequestPassword();
+            $keepLoggedIn = $this->loginView->getRequestKeep();
+
+            if ($name === "") {
+    			$this->fmp->add("Username is missing");
+    		} else if ($password === "") {
+                $this->fmp->add("Password is missing");
+            } else {
+                $this->user = new \model\UserModel($name);
+                $passwordIsCorrect = $this->user->verifyPassword($password);
+
+                if ($passwordIsCorrect) {
+                    $this->user->login($keepLoggedIn);
+                } else {
+                    $this->fmp->add("Wrong name or password");
+                }
+            }
+
+
+
             $this->layoutView->render($this->fmp, $this->loginView);
         } else {
             $this->layoutView->render($this->fmp, $this->loginView);
@@ -27,7 +50,6 @@ class LoginController {
 
     private static function isLoginPOST() {
         return isset($_POST["LoginView::Login"])
-            && $_POST["LoginView::Login"] === "login"
-            && (isset($_SESSION["user"]) && !$_SESSION["user"]["isLoggedIn"]);
+            && $_POST["LoginView::Login"] === "login";
     }
 }

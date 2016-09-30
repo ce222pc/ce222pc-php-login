@@ -13,12 +13,6 @@ class LoginView {
 
 	public function response($flashMessage) {
 
-		if ($this->getRequestUserName() === "") {
-			$flashMessage->add("Username is missing");
-		} else if ($this->getRequestPassword() === "") {
-            $flashMessage->add("Password is missing");
-        }
-
         $message = $flashMessage->get();
 		$response = $this->generateLoginFormHTML($message);
 		//$response .= $this->generateLogoutButtonHTML($message);
@@ -57,19 +51,19 @@ class LoginView {
 	}
 
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
-	private function getRequestUserName() {
+	public function getRequestUserName() {
 		return isset($_POST[self::$name]) ? $_POST[self::$name] : false;
 	}
 
-    private function getRequestPassword() {
+    public function getRequestPassword() {
         return isset($_POST[self::$password]) ? $_POST[self::$password] : false;
     }
 
-    private function getRequestKeep() {
-        return isset($_POST[self::$keep]) ? $_POST[self::$password] : false;
+    public function getRequestKeep() {
+        return isset($_POST[self::$keep]) ? true : false;
     }
 
-    private function getRequestLogin() {
+    public function getRequestLogin() {
         return isset($_POST[self::$login]) ? $_POST[self::$login] : false;
     }
 
