@@ -33,20 +33,23 @@ class LoginController {
                 $this->user = new \model\UserModel($name);
                 $passwordIsCorrect = $this->user->verifyPassword($password);
                 if ($passwordIsCorrect) {
-                    $this->fmp->add("Welcome");
                     $this->user->login($keepLoggedIn);
+                    $this->fmp->add("Welcome");
+                    header('Location: '.$_SERVER['PHP_SELF']);
+                    die;
                 } else {
                     $this->fmp->add("Wrong name or password");
                 }
             }
             // echo '<pre>' . var_export($_SESSION, true) . '</pre>';
-            // $this->layoutView->render($this->fmp, $this->loginView);
-            header("Location: /index.php");
+            $this->layoutView->render($this->fmp, $this->loginView);
         } else if (self::isLogoutPOST()) {
             $this->user = new \model\UserModel($_SESSION["user"]["name"]);
             $this->user->logout();
             $this->fmp->add("Bye bye!");
-            $this->layoutView->render($this->fmp, $this->loginView);
+            header('Location: '.$_SERVER['PHP_SELF']);
+            die;
+            // $this->layoutView->render($this->fmp, $this->loginView);
         } else {
             $this->layoutView->render($this->fmp, $this->loginView);
         }

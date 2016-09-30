@@ -2,19 +2,23 @@
 namespace model;
 
 class FlashMessage {
-    private $messages = array();
+    public function __construct() {
+        $this->session();
+    }
 
     public function add($message) {
-        $this->messages[] = $message;
+        $_SESSION["flash"][] = $message;
     }
 
     public function get() {
-        $joinedMessages = join("<br>", $this->messages);
-        $this->messages = array();
+        $joinedMessages = join("<br>", $_SESSION["flash"]);
+        $_SESSION["flash"] = array();
         return $joinedMessages;
     }
 
-    public function render() {
-        echo $this->getMessages();
+    private function session() {
+        if (!isset($_SESSION["flash"])) {
+            $_SESSION["flash"] = array();
+        }
     }
 }
