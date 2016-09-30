@@ -40,7 +40,8 @@ class LoginController {
                 }
             }
             // echo '<pre>' . var_export($_SESSION, true) . '</pre>';
-            $this->layoutView->render($this->fmp, $this->loginView);
+            // $this->layoutView->render($this->fmp, $this->loginView);
+            header("Location: /index.php");
         } else if (self::isLogoutPOST()) {
             $this->user = new \model\UserModel($_SESSION["user"]["name"]);
             $this->user->logout();
