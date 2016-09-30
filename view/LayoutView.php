@@ -14,10 +14,10 @@ class LayoutView {
             <html>
                 <head>
                     <meta charset="utf-8">
-                    <title>Login Example</title>
+                    <title>Login - A4</title>
                 </head>
                 <body>
-                    <h1>Assignment 2</h1>
+                    <h1>Assignment 4</h1>
                     ' . $this->renderRegisterNewUser()
                     . $this->renderIsLoggedIn() . '
 

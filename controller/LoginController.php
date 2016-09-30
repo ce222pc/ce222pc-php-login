@@ -32,6 +32,7 @@ class LoginController {
             } else {
                 $this->user = new \model\UserModel($name);
                 $passwordIsCorrect = $this->user->verifyPassword($password);
+
                 if ($passwordIsCorrect) {
                     $this->user->login($keepLoggedIn);
                     $this->fmp->add("Welcome");
@@ -43,7 +44,7 @@ class LoginController {
             }
             // echo '<pre>' . var_export($_SESSION, true) . '</pre>';
             $this->layoutView->render($this->fmp, $this->loginView);
-        } else if (self::isLogoutPOST()) {
+        } else if (self::isLogoutPOST() && !isset($_SESSION["user"])) {
             $this->user = new \model\UserModel($_SESSION["user"]["name"]);
             $this->user->logout();
             $this->fmp->add("Bye bye!");
