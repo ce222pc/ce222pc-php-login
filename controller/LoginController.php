@@ -32,16 +32,14 @@ class LoginController {
             } else {
                 $this->user = new \model\UserModel($name);
                 $passwordIsCorrect = $this->user->verifyPassword($password);
-
+                var_dump($passwordIsCorrect);
                 if ($passwordIsCorrect) {
                     $this->user->login($keepLoggedIn);
                 } else {
                     $this->fmp->add("Wrong name or password");
                 }
             }
-
-
-
+            // echo '<pre>' . var_export($_SESSION, true) . '</pre>';
             $this->layoutView->render($this->fmp, $this->loginView);
         } else {
             $this->layoutView->render($this->fmp, $this->loginView);

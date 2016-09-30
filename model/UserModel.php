@@ -67,6 +67,8 @@ class UserModel {
     }
 
     public function login($keepLoggedIn=false) {
+        $this->isLoggedIn = true;
+
         $_SESSION["user"] = array(
             "name" => $this->name,
             "isRegistered"=> $this->isRegistered,
