@@ -14,8 +14,13 @@ class LoginView {
 	public function response($flashMessage) {
 
         $message = $flashMessage->get();
-		$response = $this->generateLoginFormHTML($message);
-		//$response .= $this->generateLogoutButtonHTML($message);
+
+        if (isset($_SESSION["user"]) && $_SESSION["user"]["isLoggedIn"]) {
+            $response = $this->generateLogoutButtonHTML($message);
+        } else {
+            $response = $this->generateLoginFormHTML($message);
+        }
+
 		return $response;
 	}
 

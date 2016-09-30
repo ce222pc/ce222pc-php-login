@@ -76,7 +76,7 @@ class UserModel {
         );
     }
 
-    public function logout($keepLoggedIn) {
+    public function logout() {
         unset($_SESSION["user"]);
         session_regenerate_id();
     }

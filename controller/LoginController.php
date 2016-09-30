@@ -15,7 +15,7 @@ class LoginController {
         $this->loginView = new \view\LoginView();
     }
     public function shouldRoute() {
-        return self::isLoginPOST();
+        return self::isLoginPOST() || self::isLogoutPOST();
     }
     public function route() {
         if (self::isLoginPOST()) {
@@ -32,14 +32,19 @@ class LoginController {
             } else {
                 $this->user = new \model\UserModel($name);
                 $passwordIsCorrect = $this->user->verifyPassword($password);
-                // var_dump($passwordIsCorrect);
                 if ($passwordIsCorrect) {
+                    $this->fmp->add("Welcome");
                     $this->user->login($keepLoggedIn);
                 } else {
                     $this->fmp->add("Wrong name or password");
                 }
             }
             // echo '<pre>' . var_export($_SESSION, true) . '</pre>';
+            $this->layoutView->render($this->fmp, $this->loginView);
+        } else if (self::isLogoutPOST()) {
+            $this->user = new \model\UserModel($_SESSION["user"]["name"]);
+            $this->user->logout();
+            $this->fmp->add("Bye bye!");
             $this->layoutView->render($this->fmp, $this->loginView);
         } else {
             $this->layoutView->render($this->fmp, $this->loginView);
@@ -49,5 +54,10 @@ class LoginController {
     private static function isLoginPOST() {
         return isset($_POST["LoginView::Login"])
             && $_POST["LoginView::Login"] === "login";
+    }
+
+    private static function isLogoutPOST() {
+        return isset($_POST["LoginView::Logout"])
+            && $_POST["LoginView::Logout"] === "logout";
     }
 }
