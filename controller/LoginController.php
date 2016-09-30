@@ -32,7 +32,7 @@ class LoginController {
             } else {
                 $this->user = new \model\UserModel($name);
                 $passwordIsCorrect = $this->user->verifyPassword($password);
-                var_dump($passwordIsCorrect);
+                // var_dump($passwordIsCorrect);
                 if ($passwordIsCorrect) {
                     $this->user->login($keepLoggedIn);
                 } else {
