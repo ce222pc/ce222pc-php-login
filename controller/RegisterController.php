@@ -50,6 +50,9 @@ class RegisterController {
             if($valid) {
                 $this->user = new \model\UserModel($name);
                 $this->user->register($password);
+                $this->fmp->add("Registered new user.");
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                die;
             } else {
                 $this->layoutView->render($this->fmp, $this->registerView);
             }
