@@ -50,6 +50,8 @@ class RegisterController {
             if($valid) {
                 $this->user = new \model\UserModel($name);
                 $this->user->register($password);
+            } else {
+                $this->layoutView->render($this->fmp, $this->registerView);
             }
 
         }
