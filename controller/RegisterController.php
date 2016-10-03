@@ -33,6 +33,7 @@ class RegisterController {
             if(!\model\UserModel::validateNameCharacters($name)) {
                 $valid = false;
                 $this->fmp->add("Username contains invalid characters.");
+                $this->registerView->setRequestUserName(strip_tags($this->registerView->getRequestUserName()));
             }
             if(!\model\UserModel::validateNameLength($name)) {
                 $valid = false;

@@ -53,6 +53,7 @@ class RegisterView {
         return isset($_POST[self::$name]) ? $_POST[self::$name] : false;
     }
 
+
     public function getRequestPassword() {
         return isset($_POST[self::$password]) ? $_POST[self::$password] : false;
     }
@@ -63,5 +64,10 @@ class RegisterView {
 
     public function getRequestRegister() {
         return isset($_POST[self::$register]) ? $_POST[self::$register] : false;
+    }
+
+
+    public function setRequestUserName($name) {
+        $_POST[self::$name] = $name;
     }
 }
