@@ -18,7 +18,7 @@ class RegisterController {
         return isset($_GET["register"]);
     }
     public function route() {
-        if (isset($_GET["register"])) {
+        if (isset($_GET["register"]) && $_SERVER["REQUEST_METHOD"] === "GET") {
             $this->layoutView->render($this->fmp, $this->registerView);
         }
 
