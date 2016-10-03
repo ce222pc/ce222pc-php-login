@@ -18,9 +18,9 @@ class LoginController {
         return self::isLoginPOST() || self::isLogoutPOST();
     }
     public function route() {
-        if (self::isLoginPOST()) {
-            // Handle post data
 
+        // On login POST
+        if (self::isLoginPOST()) {
             $name = $this->loginView->getRequestUserName();
             $password = $this->loginView->getRequestPassword();
             $keepLoggedIn = $this->loginView->getRequestKeep();
@@ -36,7 +36,7 @@ class LoginController {
                 if ($passwordIsCorrect) {
                     $this->user->login($keepLoggedIn);
                     $this->fmp->add("Welcome");
-                    header('Location: '.$_SERVER['PHP_SELF']);
+                    header('Location: ' . $_SERVER['PHP_SELF']);
                     die;
                 } else {
                     $this->fmp->add("Wrong name or password");
@@ -44,7 +44,9 @@ class LoginController {
             }
             // echo '<pre>' . var_export($_SESSION, true) . '</pre>';
             $this->layoutView->render($this->fmp, $this->loginView);
-        } else if (self::isLogoutPOST() && !isset($_SESSION["user"])) {
+
+        // On logout POST
+        } else if (self::isLogoutPOST() && isset($_SESSION["user"])) {
             $this->user = new \model\UserModel($_SESSION["user"]["name"]);
             $this->user->logout();
             $this->fmp->add("Bye bye!");
