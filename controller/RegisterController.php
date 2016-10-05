@@ -29,6 +29,7 @@ class RegisterController {
             $passwordRepeat = $this->registerView->getRequestPasswordRepeat();
 
             $valid = true;
+            $this->user = new \model\UserModel($name);
 
             if(!\model\UserModel::validateNameCharacters($name)) {
                 $valid = false;
@@ -48,8 +49,12 @@ class RegisterController {
                 $this->fmp->add("Passwords do not match.");
             }
 
+            if($this->user->isRegistered) {
+                $valid = false;
+                $this->fmp->add("User exists, pick another username");
+            }
+
             if($valid) {
-                $this->user = new \model\UserModel($name);
                 $this->user->register($password);
                 $this->fmp->add("Registered new user.");
                 header('Location: ' . $_SERVER['PHP_SELF']);
