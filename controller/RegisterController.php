@@ -13,6 +13,7 @@ class RegisterController {
         $this->fmp = $flashMessageProvider;
         $this->layoutView = new \view\LayoutView();
         $this->registerView = new \view\RegisterView();
+        $this->loginView = new \view\loginView();
     }
     public function shouldRoute() {
         return isset($_GET["register"]);
@@ -57,7 +58,8 @@ class RegisterController {
             if($valid) {
                 $this->user->register($password);
                 $this->fmp->add("Registered new user.");
-                header('Location: ' . $_SERVER['PHP_SELF']);
+                $_POST["RegisterView::UserName"] = "Hej";
+                header('Location: ' . $_SERVER['PHP_SELF'] . "?hej");
                 die;
             } else {
                 $this->layoutView->render($this->fmp, $this->registerView);

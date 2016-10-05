@@ -29,6 +29,7 @@ class UserModel {
             $this->isRegistered = true;
             $this->hash = $user["hash"];
         }
+        $this->saveToSession();
     }
 
     public function register($password) {
@@ -62,7 +63,10 @@ class UserModel {
 
     public function login($keepLoggedIn=false) {
         $this->isLoggedIn = true;
+        $this->saveToSession();
+    }
 
+    public function saveToSession() {
         $_SESSION["user"] = array(
             "name" => $this->name,
             "isRegistered"=> $this->isRegistered,

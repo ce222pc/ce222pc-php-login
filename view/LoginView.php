@@ -35,7 +35,8 @@ class LoginView {
 
 	private function generateLoginFormHTML($message) {
 		return '
-			<form method="post" >
+
+            <form method="post" >
 				<fieldset>
 					<legend>Login - enter Username and password</legend>
 					<p id="' . self::$messageId . '">' . $message . '</p>
@@ -57,7 +58,14 @@ class LoginView {
 
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
 	public function getRequestUserName() {
-		return isset($_POST[self::$name]) ? $_POST[self::$name] : false;
+        if (isset($_POST[self::$name])) {
+            return $_POST[self::$name];
+        } else if(isset($_SESSION["user"])) {
+            return $_SESSION["user"]["name"];
+        } else {
+            return false;
+        }
+		// return isset($_POST[self::$name]) ? $_POST[self::$name] : false;
 	}
 
     public function getRequestPassword() {
@@ -72,10 +80,8 @@ class LoginView {
         return isset($_POST[self::$login]) ? $_POST[self::$login] : false;
     }
 
-    public function getLoginDetails() {
-        $name = self::getRequestUserName();
-        $password = self::getRequestPassword();
-        $keep = self::getRequestKeep();
+    public function setRequestUserName($name) {
+        $_POST[self::$name] = $name;
     }
 
 }
