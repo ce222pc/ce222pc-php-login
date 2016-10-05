@@ -51,7 +51,7 @@ class RegisterController {
 
             if($this->user->isRegistered) {
                 $valid = false;
-                $this->fmp->add("User exists, pick another username");
+                $this->fmp->add("User exists, pick another username.");
             }
 
             if($valid) {
