@@ -19,6 +19,16 @@ class LoginController {
     }
     public function route() {
 
+        if ($this->loginView->getCookieUserName()) {
+            $this->user = new \model\UserModel($this->loginView->getCookieUserName());
+            if ($this->user->cookiePassword === $this->loginView->getCookiePassword() && !$this->user->isLoggedIn) {
+                $this->user->login();
+                $this->fmp->add("Welcome back with cookie");
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                die;
+            }
+        }
+
         // On login POST
         if (self::isLoginPOST()) {
             $name = $this->loginView->getRequestUserName();
@@ -33,7 +43,6 @@ class LoginController {
                 $this->user = new \model\UserModel($name);
                 $passwordIsCorrect = $this->user->verifyPassword($password);
                 $userIsLoggedIn = $_SESSION["user"]["isLoggedIn"];
-                // $userIsLoggedIn = $this->user->isLoggedIn;
                 if ($passwordIsCorrect) {
                     $this->user->login($keepLoggedIn);
                     if(!$userIsLoggedIn) {
@@ -45,7 +54,6 @@ class LoginController {
                     $this->fmp->add("Wrong name or password");
                 }
             }
-            // echo '<pre>' . var_export($_SESSION, true) . '</pre>';
             $this->layoutView->render($this->fmp, $this->loginView);
 
         // On logout POST
@@ -55,7 +63,6 @@ class LoginController {
             $this->fmp->add("Bye bye!");
             header('Location: '.$_SERVER['PHP_SELF']);
             die;
-            // $this->layoutView->render($this->fmp, $this->loginView);
         } else {
             $this->layoutView->render($this->fmp, $this->loginView);
         }

@@ -9,6 +9,10 @@ class UserModel {
     public $isRegistered;
     public $isLoggedIn;
 
+    private static $cookieTimeLimit = 30*24*60*60; // 30 days
+    private static $cookieNameString = "LoginView::CookieName";
+    private static $cookiePasswordString = "LoginView::CookiePassword";
+
     private $db;
 
     function __construct($name) {
@@ -21,14 +25,17 @@ class UserModel {
         $this->name = $name;
         $this->hash = "";
         $this->isRegistered = false;
-        $this->isLoggedIn = isset($_SESSION["user"]["isLoggedIn"]);
+        $this->cookiePassword = null;
+        $this->isLoggedIn = isset($_SESSION["user"]["isLoggedIn"]) ? $_SESSION["user"]["isLoggedIn"] : false;
 
         $user = $this->findOneByName();
 
         if ($user) {
             $this->isRegistered = true;
             $this->hash = $user["hash"];
+            $this->cookiePassword = $user["cookie_password"];
         }
+
         $this->saveToSession();
     }
 
@@ -38,6 +45,46 @@ class UserModel {
         $statement->bindValue(1, $this->name);
         $statement->bindValue(2, $this->hash);
         $statement->execute();
+    }
+
+    public function generateCookiePassword() {
+        return hash("sha256", time());
+    }
+
+    public function saveCookiePassword() {
+        $cookiePassword = $this->generateCookiePassword();
+        $statement = $this->db->prepare("UPDATE user SET cookie_password = :cookiePassword WHERE name = :name");
+        $statement->bindParam(":cookiePassword", $cookiePassword);
+        $statement->bindParam(":name", $this->name);
+        $statement->execute();
+
+        $this->cookiePassword =$cookiePassword;
+    }
+
+    public function setCookies() {
+        $this->setNameCookie();
+        $this->setPasswordCookie();
+    }
+
+    public function setNameCookie() {
+        setcookie(self::$cookieNameString, $this->name, time() + self::$cookieTimeLimit);
+    }
+
+    public function setPasswordCookie() {
+        setcookie(self::$cookiePasswordString, $this->cookiePassword, time() + self::$cookieTimeLimit);
+    }
+
+    public function deleteCookies() {
+        $this->deleteNameCookie();
+        $this->deletePasswordCookie();
+    }
+
+    public function deleteNameCookie() {
+        setcookie(self::$cookieNameString, "", time() - 3600);
+    }
+
+    public function deletePasswordCookie() {
+        setcookie(self::$cookiePasswordString, "", time() - 3600);
     }
 
     public static function validateNameCharacters($name) {
@@ -56,13 +103,18 @@ class UserModel {
         return $password === $passwordRepeat;
     }
 
-
     public function verifyPassword($candidate) {
         return password_verify($candidate, $this->hash);
     }
 
     public function login($keepLoggedIn=false) {
         $this->isLoggedIn = true;
+
+        if ($keepLoggedIn) {
+            $this->saveCookiePassword();
+            $this->setCookies();
+        }
+
         $this->saveToSession();
     }
 
@@ -76,6 +128,7 @@ class UserModel {
 
     public function logout() {
         unset($_SESSION["user"]);
+        $this->deleteCookies();
         session_regenerate_id();
     }
 

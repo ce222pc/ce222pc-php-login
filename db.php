@@ -8,10 +8,11 @@ class Database {
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         if(!$this->databaseExists()) {
-            $db->exec("CREATE TABLE user (
+            $this->$db->exec("CREATE TABLE user (
                 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                 name VARCHAR(255) UNIQUE NOT NULL,
-                hash VARCHAR(255) NOT NULL
+                hash VARCHAR(255) NOT NULL,
+                cookie_password VARCHAR(255)
             )"
         );
 

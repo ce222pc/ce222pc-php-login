@@ -80,6 +80,19 @@ class LoginView {
         return isset($_POST[self::$login]) ? $_POST[self::$login] : false;
     }
 
+    public function getCookieUserName() {
+        return isset($_COOKIE[self::$cookieName]) ? $_COOKIE[self::$cookieName] : false;
+    }
+
+    public function getCookiePassword() {
+        return isset($_COOKIE[self::$cookiePassword]) ? $_COOKIE[self::$cookiePassword] : false;
+    }
+
+
+
+
+
+    // ???
     public function setRequestUserName($name) {
         $_POST[self::$name] = $name;
     }

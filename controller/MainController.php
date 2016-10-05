@@ -26,7 +26,8 @@ class MainController {
         } else {
             // Render index page
             // echo("DEFAULT ROUTE (LOGIN CONTROLLER)");
-            $this->layoutView->render($this->fmp, $this->loginView);
+            // $this->layoutView->render($this->fmp, $this->loginView);
+            $this->loginController->route();
         }
     }
 }
