@@ -40,12 +40,6 @@ class UserModel {
     }
 
     public static function validateNameCharacters($name) {
-        // $valid = true;
-        // $message = "";
-        // if ($this->name === htmlspecialchars($this->name)) {
-        //     $valid = false;
-        //     $message = "Username contains invalid characters"
-        // }
         return $name === htmlspecialchars($name);
     }
 
