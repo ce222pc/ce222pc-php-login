@@ -9,7 +9,7 @@ class UserModel {
     public $isRegistered;
     public $isLoggedIn;
 
-    private static $cookieTimeLimit = 30*24*60*60; // 30 days
+    private static $cookieTimeLimit = 2592000; // 30 days
     private static $cookieNameString = "LoginView::CookieName";
     private static $cookiePasswordString = "LoginView::CookiePassword";
 
