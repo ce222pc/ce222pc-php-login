@@ -58,7 +58,7 @@ class UserModel {
         $statement->bindParam(":name", $this->name);
         $statement->execute();
 
-        $this->cookiePassword =$cookiePassword;
+        $this->cookiePassword = $cookiePassword;
     }
 
     public function setCookies() {
@@ -109,7 +109,7 @@ class UserModel {
 
     public function login($keepLoggedIn=false) {
         $this->isLoggedIn = true;
-
+        $_SESSION["browser"] = $_SERVER['HTTP_USER_AGENT'];
         if ($keepLoggedIn) {
             $this->saveCookiePassword();
             $this->setCookies();

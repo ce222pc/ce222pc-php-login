@@ -19,6 +19,9 @@ class LoginController {
     }
     public function route() {
 
+
+
+
         if ($this->loginView->getCookieUserName()) {
             $this->user = new \model\UserModel($this->loginView->getCookieUserName());
             if ($this->user->cookiePassword === $this->loginView->getCookiePassword()) {
@@ -71,6 +74,14 @@ class LoginController {
             header('Location: '.$_SERVER['PHP_SELF']);
             die;
         } else {
+
+            if (isset($_SESSION["browser"]) && isset($_SESSION["user"]) && $_SESSION["user"]["isLoggedIn"]) {
+                $this->user = new \model\UserModel($_SESSION["user"]["name"]);
+                if ($_SESSION["browser"] !== $_SERVER['HTTP_USER_AGENT']) {
+                    $this->user->logout();
+                }
+            }
+
             $this->layoutView->render($this->fmp, $this->loginView);
         }
     }
