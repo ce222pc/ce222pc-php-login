@@ -32,7 +32,8 @@ class LoginController {
             } else {
                 $this->user = new \model\UserModel($name);
                 $passwordIsCorrect = $this->user->verifyPassword($password);
-                $userIsLoggedIn = $_SESSION["user"]["isLoggedIn"];
+                // $userIsLoggedIn = $_SESSION["user"]["isLoggedIn"];
+                $userIsLoggedIn = $this->user->isLoggedIn;
                 if ($passwordIsCorrect && $userIsLoggedIn) {
                     $this->user->login($keepLoggedIn);
                     $this->fmp->add("Welcome");
