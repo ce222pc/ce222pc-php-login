@@ -21,7 +21,7 @@ class UserModel {
         $this->name = $name;
         $this->hash = "";
         $this->isRegistered = false;
-        $this->isLoggedIn = false;
+        $this->isLoggedIn = isset($_SESSION["user"]["isLoggedIn"]);
 
         $user = $this->findOneByName();
 

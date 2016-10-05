@@ -39,7 +39,7 @@ class LoginController {
                     if($userIsLoggedIn) {
                         $this->fmp->add("NO!");
                     }
-                    // $this->fmp->add("Welcome");
+                    $this->fmp->add("Welcome");
                     header('Location: ' . $_SERVER['PHP_SELF']);
                     die;
                 } else {
