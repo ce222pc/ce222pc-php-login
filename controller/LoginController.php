@@ -34,9 +34,12 @@ class LoginController {
                 $passwordIsCorrect = $this->user->verifyPassword($password);
                 $userIsLoggedIn = $_SESSION["user"]["isLoggedIn"];
                 // $userIsLoggedIn = $this->user->isLoggedIn;
-                if ($passwordIsCorrect && !$userIsLoggedIn) {
+                if ($passwordIsCorrect) {
                     $this->user->login($keepLoggedIn);
-                    $this->fmp->add("Welcome");
+                    if($userIsLoggedIn) {
+                        $this->fmp->add("NO!");
+                    }
+                    // $this->fmp->add("Welcome");
                     header('Location: ' . $_SERVER['PHP_SELF']);
                     die;
                 } else {
