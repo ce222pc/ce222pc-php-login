@@ -22,7 +22,7 @@ class LoginController {
         if ($this->loginView->getCookieUserName()) {
             $this->user = new \model\UserModel($this->loginView->getCookieUserName());
             if ($this->user->cookiePassword === $this->loginView->getCookiePassword() && !$this->user->isLoggedIn) {
-                $this->user->login();
+                $this->user->login(true);
                 $this->fmp->add("Welcome back with cookie");
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 die;
