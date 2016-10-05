@@ -14,13 +14,12 @@ class LoginController {
         $this->layoutView = new \view\LayoutView();
         $this->loginView = new \view\LoginView();
     }
+
     public function shouldRoute() {
         return self::isLoginPOST() || self::isLogoutPOST();
     }
+
     public function route() {
-
-
-
 
         if ($this->loginView->getCookieUserName()) {
             $this->user = new \model\UserModel($this->loginView->getCookieUserName());

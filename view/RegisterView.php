@@ -66,7 +66,7 @@ class RegisterView {
         return isset($_POST[self::$register]) ? $_POST[self::$register] : false;
     }
 
-
+    // ???
     public function setRequestUserName($name) {
         $_POST[self::$name] = $name;
     }
