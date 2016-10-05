@@ -22,7 +22,7 @@ class RegisterController {
             $this->layoutView->render($this->fmp, $this->registerView);
         }
 
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        if ($_SERVER["REQUEST_METHOD"] === "POST" && $this->registerView->getRequestRegister() === "Register") {
             $register = $this->registerView->getRequestRegister();
             $name = $this->registerView->getRequestUserName();
             $password = $this->registerView->getRequestPassword();
