@@ -21,7 +21,8 @@ class LoginController {
 
         if ($this->loginView->getCookieUserName()) {
             $this->user = new \model\UserModel($this->loginView->getCookieUserName());
-            $this->user->login(true);
+            $this->user->saveCookiePassword();
+            $this->user->setCookies();
             if ($this->user->cookiePassword === $this->loginView->getCookiePassword() && !$this->user->isLoggedIn) {
                 $this->user->login(true);
                 $this->fmp->add("Welcome back with cookie");
