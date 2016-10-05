@@ -21,11 +21,16 @@ class LoginController {
 
         if ($this->loginView->getCookieUserName()) {
             $this->user = new \model\UserModel($this->loginView->getCookieUserName());
-            $this->user->saveCookiePassword();
-            $this->user->setCookies();
-            if ($this->user->cookiePassword === $this->loginView->getCookiePassword() && !$this->user->isLoggedIn) {
-                $this->user->login(true);
-                $this->fmp->add("Welcome back with cookie");
+            if ($this->user->cookiePassword === $this->loginView->getCookiePassword()) {
+                if (!$this->user->isLoggedIn) {
+                    $this->user->login(true);
+                    $this->fmp->add("Welcome back with cookie");
+                    header('Location: ' . $_SERVER['PHP_SELF']);
+                    die;
+                }
+            } else {
+                $this->fmp->add("Wrong information in cookies");
+                $this->user->logout();
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 die;
             }
