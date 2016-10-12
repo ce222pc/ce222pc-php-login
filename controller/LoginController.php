@@ -42,14 +42,12 @@ class LoginController {
                 if (!$this->user->isLoggedIn) {
                     $this->user->login(true);
                     $this->fmp->add("Welcome back with cookie");
-                    header('Location: ' . $_SERVER['PHP_SELF']);
-                    die;
+                    $this->redirectAndDie();
                 }
             } else {
                 $this->fmp->add("Wrong information in cookies");
                 $this->user->logout();
-                header('Location: ' . $_SERVER['PHP_SELF']);
-                die;
+                $this->redirectAndDie();
             }
         }
     }
@@ -90,13 +88,19 @@ class LoginController {
                 if(!$userIsLoggedIn) {
                     $this->fmp->add("Welcome");
                 }
-                header('Location: ' . $_SERVER['PHP_SELF']);
-                die;
+
+                $this->redirectAndDie();
+
             } else {
                 $this->fmp->add("Wrong name or password");
             }
         }
         $this->layoutView->render($this->fmp, $this->loginView);
+    }
+
+    private function redirectAndDie() {
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        die;
     }
 
     private function doLogoutPOST() {

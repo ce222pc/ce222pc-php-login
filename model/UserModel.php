@@ -48,7 +48,7 @@ class UserModel {
     }
 
     public function generateCookiePassword() {
-        return hash("sha256", time());
+        return hash("sha256", rand());
     }
 
     public function saveCookiePassword() {
