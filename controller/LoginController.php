@@ -20,7 +20,22 @@ class LoginController {
     }
 
     public function route() {
+        $this->handleCookieLogin();
 
+        // On login POST
+        if (self::isLoginPOST()) {
+            $this->doLoginPOST();
+
+        // On logout POST
+        } else if (self::isLogoutPOST() && isset($_SESSION["user"])) {
+            $this->doLogoutPOST();
+        } else {
+            $this->preventSessionHijack();
+            $this->layoutView->render($this->fmp, $this->loginView);
+        }
+    }
+
+    private function handleCookieLogin() {
         if ($this->loginView->getCookieUserName()) {
             $this->user = new \model\UserModel($this->loginView->getCookieUserName());
             if ($this->user->cookiePassword === $this->loginView->getCookiePassword()) {
@@ -37,24 +52,14 @@ class LoginController {
                 die;
             }
         }
+    }
 
-        // On login POST
-        if (self::isLoginPOST()) {
-            $this->doLoginPOST();
-
-        // On logout POST
-        } else if (self::isLogoutPOST() && isset($_SESSION["user"])) {
-            $this->doLogoutPOST();
-        } else {
-
-            if (isset($_SESSION["browser"]) && isset($_SESSION["user"]) && $_SESSION["user"]["isLoggedIn"]) {
-                $this->user = new \model\UserModel($_SESSION["user"]["name"]);
-                if ($_SESSION["browser"] !== $_SERVER['HTTP_USER_AGENT']) {
-                    $this->user->logout();
-                }
+    private function preventSessionHijack() {
+        if (isset($_SESSION["browser"]) && isset($_SESSION["user"]) && $_SESSION["user"]["isLoggedIn"]) {
+            $this->user = new \model\UserModel($_SESSION["user"]["name"]);
+            if ($_SESSION["browser"] !== $_SERVER['HTTP_USER_AGENT']) {
+                $this->user->logout();
             }
-
-            $this->layoutView->render($this->fmp, $this->loginView);
         }
     }
 
