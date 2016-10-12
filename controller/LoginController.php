@@ -40,38 +40,11 @@ class LoginController {
 
         // On login POST
         if (self::isLoginPOST()) {
-            $name = $this->loginView->getRequestUserName();
-            $password = $this->loginView->getRequestPassword();
-            $keepLoggedIn = $this->loginView->getRequestKeep();
-
-            if ($name === "") {
-    			$this->fmp->add("Username is missing");
-    		} else if ($password === "") {
-                $this->fmp->add("Password is missing");
-            } else {
-                $this->user = new \model\UserModel($name);
-                $passwordIsCorrect = $this->user->verifyPassword($password);
-                $userIsLoggedIn = $_SESSION["user"]["isLoggedIn"];
-                if ($passwordIsCorrect) {
-                    $this->user->login($keepLoggedIn);
-                    if(!$userIsLoggedIn) {
-                        $this->fmp->add("Welcome");
-                    }
-                    header('Location: ' . $_SERVER['PHP_SELF']);
-                    die;
-                } else {
-                    $this->fmp->add("Wrong name or password");
-                }
-            }
-            $this->layoutView->render($this->fmp, $this->loginView);
+            $this->doLoginPOST();
 
         // On logout POST
         } else if (self::isLogoutPOST() && isset($_SESSION["user"])) {
-            $this->user = new \model\UserModel($_SESSION["user"]["name"]);
-            $this->user->logout();
-            $this->fmp->add("Bye bye!");
-            header('Location: '.$_SERVER['PHP_SELF']);
-            die;
+            $this->doLogoutPOST();
         } else {
 
             if (isset($_SESSION["browser"]) && isset($_SESSION["user"]) && $_SESSION["user"]["isLoggedIn"]) {
@@ -92,5 +65,40 @@ class LoginController {
     private static function isLogoutPOST() {
         return isset($_POST["LoginView::Logout"])
             && $_POST["LoginView::Logout"] === "logout";
+    }
+
+    private function doLoginPOST() {
+        $name = $this->loginView->getRequestUserName();
+        $password = $this->loginView->getRequestPassword();
+        $keepLoggedIn = $this->loginView->getRequestKeep();
+
+        if ($name === "") {
+            $this->fmp->add("Username is missing");
+        } else if ($password === "") {
+            $this->fmp->add("Password is missing");
+        } else {
+            $this->user = new \model\UserModel($name);
+            $passwordIsCorrect = $this->user->verifyPassword($password);
+            $userIsLoggedIn = $_SESSION["user"]["isLoggedIn"];
+            if ($passwordIsCorrect) {
+                $this->user->login($keepLoggedIn);
+                if(!$userIsLoggedIn) {
+                    $this->fmp->add("Welcome");
+                }
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                die;
+            } else {
+                $this->fmp->add("Wrong name or password");
+            }
+        }
+        $this->layoutView->render($this->fmp, $this->loginView);
+    }
+
+    private function doLogoutPOST() {
+        $this->user = new \model\UserModel($_SESSION["user"]["name"]);
+        $this->user->logout();
+        $this->fmp->add("Bye bye!");
+        header('Location: '.$_SERVER['PHP_SELF']);
+        die;
     }
 }

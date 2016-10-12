@@ -6,8 +6,10 @@ class MainController {
 
     public function __construct($flashMessageProvider) {
         $this->fmp = $flashMessageProvider;
+
         $this->registerController = new \controller\RegisterController($this->fmp);
         $this->loginController = new \controller\LoginController($this->fmp);
+
         $this->layoutView = new \view\LayoutView();
         $this->loginView = new \view\loginView();
         $this->registerView = new \view\RegisterView();

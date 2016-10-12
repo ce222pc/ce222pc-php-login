@@ -1,9 +1,6 @@
 <?php
 namespace controller;
 
-require_once('view/RegisterView.php');
-require_once('model/UserModel.php');
-
 class RegisterController {
 
     private $layoutView;
@@ -37,14 +34,17 @@ class RegisterController {
                 $this->fmp->add("Username contains invalid characters.");
                 $this->registerView->setRequestUserName(strip_tags($this->registerView->getRequestUserName()));
             }
+
             if(!\model\UserModel::validateNameLength($name)) {
                 $valid = false;
                 $this->fmp->add("Username has too few characters, at least 3 characters.");
             }
+
             if(!\model\UserModel::validatePasswordLength($password)) {
                 $valid = false;
                 $this->fmp->add("Password has too few characters, at least 6 characters.");
             }
+
             if(!\model\UserModel::validatePasswordMatch($password, $passwordRepeat)) {
                 $valid = false;
                 $this->fmp->add("Passwords do not match.");
