@@ -62,7 +62,7 @@ class LoginView {
     public function getUsername() {
         $username = "";
         try {
-            $username = $this->getCookieUserName();
+            $username = $this->getRequestUserName();
         } catch (Exception $e) {
             $username = isset($_SESSION["user"]) ? $_SESSION["user"] : "";
         }
