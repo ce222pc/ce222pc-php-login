@@ -1,6 +1,9 @@
 <?php
 namespace view;
 
+require_once("exceptions/UsernameEmptyException.php");
+require_once("exceptions/PasswordEmptyException.php");
+
 class LoginView {
 	private static $login = 'LoginView::Login';
 	private static $logout = 'LoginView::Logout';
@@ -35,14 +38,13 @@ class LoginView {
 
 	private function generateLoginFormHTML($message) {
 		return '
-
             <form method="post" >
 				<fieldset>
 					<legend>Login - enter Username and password</legend>
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . self::getRequestUserName() . '" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getUsername() . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -56,20 +58,38 @@ class LoginView {
 		';
 	}
 
+
+    public function getUsername() {
+        $username = "";
+        try {
+            $username = $this->getCookieUserName();
+        } catch (Exception $e) {
+            $username = isset($_SESSION["user"]) ? $_SESSION["user"] : "";
+        }
+        return $username;
+    }
+
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
 	public function getRequestUserName() {
-        if (isset($_POST[self::$name])) {
-            return $_POST[self::$name];
-        } else if(isset($_SESSION["user"])) {
-            return $_SESSION["user"]["name"];
-        } else {
-            return false;
+        if (empty($_POST[self::$name])) {
+            throw new \UsernameEmptyException("Username missing", 1);
         }
-		// return isset($_POST[self::$name]) ? $_POST[self::$name] : false;
+        return $_POST[self::$name];
+
+        // if (isset($_POST[self::$name])) {
+        //     return $_POST[self::$name];
+        // } else if(isset($_SESSION["user"])) {
+        //     return $_SESSION["user"]["name"];
+        // } else {
+        //     return false;
+        // }
 	}
 
     public function getRequestPassword() {
-        return isset($_POST[self::$password]) ? $_POST[self::$password] : false;
+        if (empty($_POST[self::$password])) {
+            throw new \PasswordEmptyException("Password missing", 1);
+        }
+        return $_POST[self::$password];
     }
 
     public function getRequestKeep() {

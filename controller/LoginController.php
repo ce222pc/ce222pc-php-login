@@ -4,6 +4,9 @@ namespace controller;
 require_once('view/LoginView.php');
 require_once('model/UserModel.php');
 
+require_once("exceptions/UsernameEmptyException.php");
+require_once("exceptions/PasswordEmptyException.php");
+
 class LoginController {
 
     private $layoutView;
@@ -66,20 +69,15 @@ class LoginController {
     }
 
     private static function isLogoutPOST() {
-        return isset($_POST["LoginView::Logout"])
-            && $_POST["LoginView::Logout"] === "logout";
+        return isset($_POST["LoginView::Logout"]) && $_POST["LoginView::Logout"] === "logout";
     }
 
     private function doLoginPOST() {
-        $name = $this->loginView->getRequestUserName();
-        $password = $this->loginView->getRequestPassword();
-        $keepLoggedIn = $this->loginView->getRequestKeep();
+        try {
+            $name = $this->loginView->getRequestUserName();
+            $password = $this->loginView->getRequestPassword();
+            $keepLoggedIn = $this->loginView->getRequestKeep();
 
-        if ($name === "") {
-            $this->fmp->add("Username is missing");
-        } else if ($password === "") {
-            $this->fmp->add("Password is missing");
-        } else {
             $this->user = new \model\UserModel($name);
             $passwordIsCorrect = $this->user->verifyPassword($password);
             $userIsLoggedIn = $_SESSION["user"]["isLoggedIn"];
@@ -88,14 +86,17 @@ class LoginController {
                 if(!$userIsLoggedIn) {
                     $this->fmp->add("Welcome");
                 }
-
                 $this->redirectAndDie();
-
             } else {
                 $this->fmp->add("Wrong name or password");
             }
+        } catch (\UsernameEmptyException $e) {
+            $this->fmp->add("Username is missing");
+        } catch (\PasswordEmptyException $e) {
+            $this->fmp->add("Password is missing");
+        } finally {
+            $this->layoutView->render($this->fmp, $this->loginView);
         }
-        $this->layoutView->render($this->fmp, $this->loginView);
     }
 
     private function redirectAndDie() {
