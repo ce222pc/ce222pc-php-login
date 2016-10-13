@@ -63,8 +63,8 @@ class LoginView {
         $username = "";
         try {
             $username = $this->getRequestUserName();
-        } catch (Exception $e) {
-            $username = isset($_SESSION["user"]) ? $_SESSION["user"] : "";
+        } catch (\Exception $e) {
+            $username = isset($_SESSION["user"]) ? $_SESSION["user"]["name"] : "";
         }
         return $username;
     }
