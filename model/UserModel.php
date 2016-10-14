@@ -1,6 +1,6 @@
 <?php
 namespace model;
-require_once("db.php");
+require_once("Database.php");
 
 class UserModel {
 
@@ -16,10 +16,8 @@ class UserModel {
     private $db;
 
     function __construct($name) {
-
-        // WTF?
         $db = new \Database();
-        $this->db = $db->db;
+        $this->db = $db->connection;
 
         // Temp
         $this->name = $name;

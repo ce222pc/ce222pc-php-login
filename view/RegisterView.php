@@ -9,6 +9,10 @@ class RegisterView {
     private static $messageId = 'RegisterView::Message';
     private static $register = 'RegisterView::Register';
 
+    public function isRegistering() {
+        // ???
+    }
+
     public function response($flashMessage) {
 
         if ($this->getRequestUserName() && $this->getRequestUserName() === "") {

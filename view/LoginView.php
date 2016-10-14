@@ -13,10 +13,19 @@ class LoginView {
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 
+    public function isLoggingIn() {
+        // ???
+    }
+
+    public function isLoggingOut() {
+        // ???
+    }
+
 	public function response($flashMessage) {
 
         $message = $flashMessage->get();
 
+        // TODO: remove string dependency
         if (isset($_SESSION["user"]) && $_SESSION["user"]["isLoggedIn"]) {
             $response = $this->generateLogoutButtonHTML($message);
         } else {
