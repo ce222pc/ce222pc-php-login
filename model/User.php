@@ -9,6 +9,7 @@ class User {
     public $hash;
     public $isRegistered;
     public $isLoggedIn;
+    public $cookiePassword;
 
     function __construct() {
         $db = new \Database();
@@ -28,6 +29,42 @@ class User {
     }
 
     public function register($password, $passwordRepeat) {
+
+    }
+
+    public function generateCookiePassword() {
+        return hash("sha256", rand());
+    }
+
+    public function saveCookiePassword() {
+
+    }
+
+    public static function validateNameCharacters($name) {
+        return $name === htmlspecialchars($name);
+    }
+
+    public static function validateNameLength($name) {
+        return strlen($name) >= 3;
+    }
+
+    public static function validatePasswordLength($name) {
+        return strlen($name) >= 6;
+    }
+
+    public static function validatePasswordMatch($password, $passwordRepeat) {
+        return $password === $passwordRepeat;
+    }
+
+    public function verifyPassword($candidate) {
+        return password_verify($candidate, $this->hash);
+    }
+
+    public function login($keepLoggedIn=false) {
+
+    }
+
+    public function logout() {
 
     }
 

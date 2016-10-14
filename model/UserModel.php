@@ -9,10 +9,6 @@ class UserModel {
     public $isRegistered;
     public $isLoggedIn;
 
-    private static $cookieTimeLimit = 2592000; // 30 days
-    private static $cookieNameString = "LoginView::CookieName";
-    private static $cookiePasswordString = "LoginView::CookiePassword";
-
     private $db;
 
     function __construct($name) {
@@ -57,32 +53,6 @@ class UserModel {
         $statement->execute();
 
         $this->cookiePassword = $cookiePassword;
-    }
-
-    public function setCookies() {
-        $this->setNameCookie();
-        $this->setPasswordCookie();
-    }
-
-    public function setNameCookie() {
-        setcookie(self::$cookieNameString, $this->name, time() + self::$cookieTimeLimit);
-    }
-
-    public function setPasswordCookie() {
-        setcookie(self::$cookiePasswordString, $this->cookiePassword, time() + self::$cookieTimeLimit);
-    }
-
-    public function deleteCookies() {
-        $this->deleteNameCookie();
-        $this->deletePasswordCookie();
-    }
-
-    public function deleteNameCookie() {
-        setcookie(self::$cookieNameString, "", time() - 3600);
-    }
-
-    public function deletePasswordCookie() {
-        setcookie(self::$cookiePasswordString, "", time() - 3600);
     }
 
     public static function validateNameCharacters($name) {

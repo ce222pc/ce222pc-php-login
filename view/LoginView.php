@@ -8,10 +8,12 @@ class LoginView {
 	private static $logout = 'LoginView::Logout';
 	private static $name = 'LoginView::UserName';
 	private static $password = 'LoginView::Password';
-	private static $cookieName = 'LoginView::CookieName';
-	private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
+
+    private static $cookieName = 'LoginView::CookieName';
+    private static $cookiePassword = 'LoginView::CookiePassword';
+    private static $cookieTimeLimit = 2592000; // 30 days
 
     public function isLoggingIn() {
         // ???
@@ -80,22 +82,14 @@ class LoginView {
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
 	public function getRequestUserName() {
         if (empty($_POST[self::$name])) {
-            throw new \UsernameEmptyException("Username missing", 1);
+            throw new \UsernameEmptyException("Username missing");
         }
         return $_POST[self::$name];
-
-        // if (isset($_POST[self::$name])) {
-        //     return $_POST[self::$name];
-        // } else if(isset($_SESSION["user"])) {
-        //     return $_SESSION["user"]["name"];
-        // } else {
-        //     return false;
-        // }
 	}
 
     public function getRequestPassword() {
         if (empty($_POST[self::$password])) {
-            throw new \PasswordEmptyException("Password missing", 1);
+            throw new \PasswordEmptyException("Password missing");
         }
         return $_POST[self::$password];
     }
@@ -116,9 +110,30 @@ class LoginView {
         return isset($_COOKIE[self::$cookiePassword]) ? $_COOKIE[self::$cookiePassword] : false;
     }
 
-    // ???
+    // TODO: remove
     public function setRequestUserName($name) {
         $_POST[self::$name] = $name;
+    }
+
+    public function setNameCookie($username) {
+        setcookie(self::$cookieName, $username, time() + self::$cookieTimeLimit);
+    }
+
+    public function setPasswordCookie($password) {
+        setcookie(self::$cookiePassword, $password, time() + self::$cookieTimeLimit);
+    }
+
+    public function deleteCookies() {
+        $this->deleteNameCookie();
+        $this->deletePasswordCookie();
+    }
+
+    public function deleteNameCookie() {
+        setcookie(self::$cookieName, "", time() - 3600);
+    }
+
+    public function deletePasswordCookie() {
+        setcookie(self::$cookiePassword, "", time() - 3600);
     }
 
 }
