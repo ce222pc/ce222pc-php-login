@@ -12,14 +12,18 @@ class RegisterController {
         $this->registerView = new \view\RegisterView();
         $this->loginView = new \view\loginView();
     }
+
     public function shouldRoute() {
         return isset($_GET["register"]);
     }
+
     public function route() {
+        // TODO: remove string dependency
         if (isset($_GET["register"]) && $_SERVER["REQUEST_METHOD"] === "GET") {
             $this->layoutView->render($this->fmp, $this->registerView);
         }
 
+        // TODO: remove string dependency
         if ($_SERVER["REQUEST_METHOD"] === "POST" && $this->registerView->getRequestRegister() === "Register") {
             $register = $this->registerView->getRequestRegister();
             $name = $this->registerView->getRequestUserName();
@@ -58,7 +62,7 @@ class RegisterController {
             if($valid) {
                 $this->user->register($password);
                 $this->fmp->add("Registered new user.");
-                $_POST["RegisterView::UserName"] = "Hej";
+
                 header('Location: ' . $_SERVER['PHP_SELF'] . "?hej");
                 die;
             } else {

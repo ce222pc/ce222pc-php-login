@@ -1,8 +1,7 @@
 <?php
 namespace view;
 
-require_once("exceptions/UsernameEmptyException.php");
-require_once("exceptions/PasswordEmptyException.php");
+
 
 class LoginView {
 	private static $login = 'LoginView::Login';
@@ -58,7 +57,7 @@ class LoginView {
 		';
 	}
 
-
+    // Remove?
     public function getUsername() {
         $username = "";
         try {

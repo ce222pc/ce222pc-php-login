@@ -4,9 +4,6 @@ namespace controller;
 require_once('view/LoginView.php');
 require_once('model/UserModel.php');
 
-require_once("exceptions/UsernameEmptyException.php");
-require_once("exceptions/PasswordEmptyException.php");
-
 class LoginController {
 
     private $layoutView;
@@ -55,6 +52,7 @@ class LoginController {
         }
     }
 
+    // TODO: remove string dependency
     private function preventSessionHijack() {
         if (isset($_SESSION["browser"]) && isset($_SESSION["user"]) && $_SESSION["user"]["isLoggedIn"]) {
             $this->user = new \model\UserModel($_SESSION["user"]["name"]);
@@ -64,10 +62,12 @@ class LoginController {
         }
     }
 
+    // TODO: remove string dependency
     private static function isLoginPOST() {
         return isset($_POST["LoginView::Login"]);
     }
 
+    // TODO: remove string dependency
     private static function isLogoutPOST() {
         return isset($_POST["LoginView::Logout"]) && $_POST["LoginView::Logout"] === "logout";
     }
@@ -80,6 +80,8 @@ class LoginController {
 
             $this->user = new \model\UserModel($name);
             $passwordIsCorrect = $this->user->verifyPassword($password);
+
+            // TODO: remove string dependency
             $userIsLoggedIn = $_SESSION["user"]["isLoggedIn"];
             if ($passwordIsCorrect) {
                 $this->user->login($keepLoggedIn);
@@ -99,16 +101,17 @@ class LoginController {
         }
     }
 
+    // TODO: Move to own file
     private function redirectAndDie() {
         header('Location: ' . $_SERVER['PHP_SELF']);
         die;
     }
 
+    // TODO: remove string dependency
     private function doLogoutPOST() {
         $this->user = new \model\UserModel($_SESSION["user"]["name"]);
         $this->user->logout();
         $this->fmp->add("Bye bye!");
-        header('Location: '.$_SERVER['PHP_SELF']);
-        die;
+        $this->redirectAndDie();
     }
 }
