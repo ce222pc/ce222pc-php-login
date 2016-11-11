@@ -45,8 +45,7 @@ class UserModel {
         return hash("sha256", rand());
     }
 
-    public function saveCookiePassword() {
-        $cookiePassword = $this->generateCookiePassword();
+    public function saveCookiePassword($cookiePassword) {
         $statement = $this->db->prepare("UPDATE user SET cookie_password = :cookiePassword WHERE name = :name");
         $statement->bindParam(":cookiePassword", $cookiePassword);
         $statement->bindParam(":name", $this->name);
@@ -78,11 +77,6 @@ class UserModel {
     public function login($keepLoggedIn=false) {
         $this->isLoggedIn = true;
         $_SESSION["browser"] = $_SERVER['HTTP_USER_AGENT'];
-        if ($keepLoggedIn) {
-            $this->saveCookiePassword();
-            $this->setCookies();
-        }
-
         $this->saveToSession();
     }
 

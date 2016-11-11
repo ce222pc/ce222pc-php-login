@@ -84,6 +84,14 @@ class LoginController {
             // TODO: remove string dependency
             $userIsLoggedIn = $_SESSION["user"]["isLoggedIn"];
             if ($passwordIsCorrect) {
+                if ($keepLoggedIn) {
+                    $this->saveCookiePassword();
+                    $this->loginView->setNameCookie($this->user->name);
+                    $cookiePassword = $this->user->generateCookiePassword();
+                    $this->loginView->setPasswordCookie($cookiePassword);
+                    $this->user->saveCookiePassword($cookiePassword);
+                }
+
                 $this->user->login($keepLoggedIn);
                 if(!$userIsLoggedIn) {
                     $this->fmp->add("Welcome");

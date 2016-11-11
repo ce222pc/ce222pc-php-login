@@ -128,11 +128,11 @@ class LoginView {
         $this->deletePasswordCookie();
     }
 
-    public function deleteNameCookie() {
+    private function deleteNameCookie() {
         setcookie(self::$cookieName, "", time() - 3600);
     }
 
-    public function deletePasswordCookie() {
+    private function deletePasswordCookie() {
         setcookie(self::$cookiePassword, "", time() - 3600);
     }
 
