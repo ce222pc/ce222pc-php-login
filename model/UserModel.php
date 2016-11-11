@@ -96,7 +96,6 @@ class UserModel {
 
     public function logout() {
         unset($_SESSION["user"]);
-        $this->deleteCookies();
         session_regenerate_id();
     }
 

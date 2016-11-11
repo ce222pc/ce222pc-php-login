@@ -111,6 +111,7 @@ class LoginController {
     private function doLogoutPOST() {
         $this->user = new \model\UserModel($_SESSION["user"]["name"]);
         $this->user->logout();
+        $this->loginView->deleteCookies();
         $this->fmp->add("Bye bye!");
         $this->redirectAndDie();
     }
