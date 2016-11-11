@@ -11,11 +11,13 @@ class UserModel {
 
     private $db;
 
+    public static $sessionUser = "user";
+    public static $userLoggedIn = "isLoggedIn";
+    public static $userName = "isLoggedIn";
+
     function __construct($name) {
         $db = new \Database();
         $this->db = $db->connection;
-
-        // Temp
         $this->name = $name;
         $this->hash = "";
         $this->isRegistered = false;

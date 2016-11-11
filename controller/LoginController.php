@@ -21,13 +21,9 @@ class LoginController {
 
     public function route() {
         $this->handleCookieLogin();
-
-        // On login POST
         if (self::isLoginPOST()) {
             $this->doLoginPOST();
-
-        // On logout POST
-        } else if (self::isLogoutPOST() && isset($_SESSION["user"])) {
+        } else if (self::isLogoutPOST() && isset($_SESSION[\model\UserModel::$sessionUser])) {
             $this->doLogoutPOST();
         } else {
             $this->preventSessionHijack();
@@ -55,8 +51,8 @@ class LoginController {
 
     // TODO: remove string dependency
     private function preventSessionHijack() {
-        if (isset($_SESSION["browser"]) && isset($_SESSION["user"]) && $_SESSION["user"]["isLoggedIn"]) {
-            $this->user = new \model\UserModel($_SESSION["user"]["name"]);
+        if (isset($_SESSION["browser"]) && isset($_SESSION[\model\UserModel::$sessionUser]) && $_SESSION[\model\UserModel::$sessionUser][\model\UserModel::$userLoggedIn]) {
+            $this->user = new \model\UserModel($_SESSION[\model\UserModel::$sessionUser][\model\UserModel::$userName]);
             if ($_SESSION["browser"] !== $_SERVER['HTTP_USER_AGENT']) {
                 $this->user->logout();
                 $this->loginView->deleteCookies();
@@ -84,7 +80,7 @@ class LoginController {
             $passwordIsCorrect = $this->user->verifyPassword($password);
 
             // TODO: remove string dependency
-            $userIsLoggedIn = $_SESSION["user"]["isLoggedIn"];
+            $userIsLoggedIn = $_SESSION[\model\UserModel::$sessionUser][\model\UserModel::$userLoggedIn];
             if ($passwordIsCorrect) {
                 if ($keepLoggedIn) {
                     $this->loginView->setNameCookie($this->user->name);
@@ -118,7 +114,7 @@ class LoginController {
 
     // TODO: remove string dependency
     private function doLogoutPOST() {
-        $this->user = new \model\UserModel($_SESSION["user"]["name"]);
+        $this->user = new \model\UserModel($_SESSION[\model\UserModel::$sessionUser][\model\UserModel::$userName]);
         $this->user->logout();
         $this->loginView->deleteCookies();
         $this->fmp->add("Bye bye!");

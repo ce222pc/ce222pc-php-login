@@ -68,7 +68,6 @@ class LoginView {
 		';
 	}
 
-    // Remove?
     public function getUsername() {
         $username = "";
         try {
@@ -79,7 +78,6 @@ class LoginView {
         return $username;
     }
 
-	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
 	public function getRequestUserName() {
         if (empty($_POST[self::$name])) {
             throw new \UsernameEmptyException("Username missing");
