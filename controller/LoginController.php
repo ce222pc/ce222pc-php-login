@@ -85,7 +85,6 @@ class LoginController {
             $userIsLoggedIn = $_SESSION["user"]["isLoggedIn"];
             if ($passwordIsCorrect) {
                 if ($keepLoggedIn) {
-                    $this->saveCookiePassword();
                     $this->loginView->setNameCookie($this->user->name);
                     $cookiePassword = $this->user->generateCookiePassword();
                     $this->loginView->setPasswordCookie($cookiePassword);
