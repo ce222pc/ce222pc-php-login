@@ -47,6 +47,7 @@ class LoginController {
             } else {
                 $this->fmp->add("Wrong information in cookies");
                 $this->user->logout();
+                $this->loginView->deleteCookies();
                 $this->redirectAndDie();
             }
         }
@@ -58,6 +59,7 @@ class LoginController {
             $this->user = new \model\UserModel($_SESSION["user"]["name"]);
             if ($_SESSION["browser"] !== $_SERVER['HTTP_USER_AGENT']) {
                 $this->user->logout();
+                $this->loginView->deleteCookies();
             }
         }
     }
