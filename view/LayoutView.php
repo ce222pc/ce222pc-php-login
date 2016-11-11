@@ -17,7 +17,7 @@ class LayoutView {
                     <title>Login - A2</title>
                 </head>
                 <body>
-                    <h1>Assignment 2</h1>
+                    <h1>Assignment 4</h1>
                     ' . $this->renderRegisterNewUser()
                     . $this->renderIsLoggedIn() . '
 
